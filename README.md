@@ -87,7 +87,7 @@ Lifecycle.NET uses SDK-style project metadata rather than separate `.nuspec` fil
 dotnet pack Lifecycle.NET.sln --configuration Release --output ./artifacts/packages
 ```
 
-Packages include the official logo and package README. Publishing is intentionally not automated; set a real repository URL and NuGet API key in release infrastructure before publishing.
+Packages include the official logo and package README. Publishing uses [NuGet Trusted Publishing](docs/releasing.md) through GitHub Actions OIDC; no long-lived API key is stored in this repository.
 
 ## Documentation site
 

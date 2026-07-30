@@ -1,0 +1,56 @@
+name: Publish NuGet packages
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Package version to publish, without a leading v
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    name: Build and publish
+    runs-on: ubuntu-latest
+    environment: nuget.org
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 9.0.x
+      - name: Derive package version
+        shell: bash
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          if [[ "$GITHUB_REF_TYPE" == "tag" ]]; then
+            version="${GITHUB_REF_NAME#v}"
+          else
+            version="$INPUT_VERSION"
+          fi
+          if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+([-.][0-9A-Za-z.-]+)?$ ]]; then
+            echo "Invalid NuGet package version: $version" >&2
+            exit 1
+          fi
+          echo "PACKAGE_VERSION=$version" >> "$GITHUB_ENV"
+      - name: Restore
+        run: dotnet restore Lifecycle.NET.sln
+      - name: Build
+        run: dotnet build Lifecycle.NET.sln --configuration Release --no-restore
+      - name: Test
+        run: dotnet run --project tests/Lifecycle.Tests --configuration Release --no-restore
+      - name: Pack
+        run: dotnet pack Lifecycle.NET.sln --configuration Release --no-build --output artifacts/packages -p:PackageVersion="$PACKAGE_VERSION"
+      - name: NuGet login using OIDC
+        id: login
+        uses: NuGet/login@v1
+        with:
+          user: ${{ vars.NUGET_USERNAME }}
+      - name: Publish packages
+        run: dotnet nuget push "artifacts/packages/*.nupkg" --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
