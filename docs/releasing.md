@@ -2,6 +2,8 @@
 
 Lifecycle.NET publishes from GitHub Actions using NuGet Trusted Publishing. It does not store a long-lived NuGet API key in GitHub.
 
+Published package IDs are `Magnexis.Lifecycle`, `Magnexis.Lifecycle.Abstractions`, `Magnexis.Lifecycle.Graph`, `Magnexis.Lifecycle.Diagnostics`, `Magnexis.Lifecycle.Hosting`, and `Magnexis.Lifecycle.Extensions.DependencyInjection`.
+
 ## One-time setup
 
 1. On nuget.org, open **Trusted Publishing** and add a GitHub Actions policy for this repository.

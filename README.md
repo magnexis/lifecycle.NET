@@ -9,6 +9,8 @@
 
 Lifecycle.NET is an async-first, framework-independent lifecycle foundation for .NET services and components. It standardizes initialization, startup, pausing, stopping, restart, disposal, and dependency-aware orchestration.
 
+NuGet packages use the `Magnexis.Lifecycle.*` namespace to provide a unique, publisher-owned package identity. This does not change the `Lifecycle` C# namespaces or the Lifecycle.NET product name.
+
 ## Included today
 
 - Thread-safe `LifecycleObject` base class with validated states and serialized transitions.
