@@ -1,0 +1,35 @@
+# .NET build output
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.user
+*.suo
+*.rsuser
+*.userosscache
+*.sln.docstates
+
+# NuGet and package output
+*.nupkg
+*.snupkg
+artifacts/
+packages/
+
+# IDE and editor files
+.vs/
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+secrets.json
+appsettings.Development.json

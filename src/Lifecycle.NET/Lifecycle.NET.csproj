@@ -1,0 +1,1 @@
+<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><AssemblyName>Lifecycle.NET</AssemblyName><RootNamespace>Lifecycle</RootNamespace><PackageId>Lifecycle.NET</PackageId><Description>Thread-safe, async-first lifecycle engine for .NET.</Description></PropertyGroup><ItemGroup><ProjectReference Include="..\Lifecycle.Abstractions\Lifecycle.Abstractions.csproj" /></ItemGroup></Project>

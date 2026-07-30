@@ -1,0 +1,27 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <LangVersion>latest</LangVersion>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <IsPackable>true</IsPackable>
+    <PackageVersion>0.1.0-alpha.1</PackageVersion>
+    <Authors>Magnexis</Authors>
+    <Company>Magnexis</Company>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryType>git</RepositoryType>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReadmeFile>PACKAGE-README.md</PackageReadmeFile>
+    <PackageIcon>lifecycle-net-package-icon.png</PackageIcon>
+    <PackageTags>lifecycle state-machine orchestration hosting diagnostics dotnet</PackageTags>
+    <PackageReleaseNotes>Initial prerelease foundation: lifecycle state machine, orchestration, diagnostics, recovery, draining, and Generic Host integration.</PackageReleaseNotes>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)PACKAGE-README.md" Pack="true" PackagePath="\" Link="PACKAGE-README.md" />
+    <None Include="$(MSBuildThisFileDirectory)assets\lifecycle-net-package-icon.png" Pack="true" PackagePath="\" Link="lifecycle-net-package-icon.png" />
+  </ItemGroup>
+</Project>
