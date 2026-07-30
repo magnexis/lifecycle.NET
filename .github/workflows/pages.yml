@@ -22,10 +22,21 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
         with:
-          path: docs/site
+          # GitHub's standard workflow token cannot create a Pages site. Supplying
+          # PAGES_ENABLEMENT_TOKEN (Pages + Administration write permission) makes
+          # first-run enablement explicit and opt-in.
+          token: ${{ secrets.PAGES_ENABLEMENT_TOKEN || github.token }}
+          enablement: ${{ secrets.PAGES_ENABLEMENT_TOKEN != '' }}
+      - name: Archive Pages artifact
+        run: tar --dereference --hard-dereference --directory docs/site -cvf "$RUNNER_TEMP/artifact.tar" .
+      - name: Upload Pages artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: github-pages
+          path: ${{ runner.temp }}/artifact.tar
+          retention-days: 1
       - id: deployment
         uses: actions/deploy-pages@v4

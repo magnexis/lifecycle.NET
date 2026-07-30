@@ -91,7 +91,9 @@ Packages include the official logo and package README. Publishing is intentional
 
 ## Documentation site
 
-The static documentation site lives in [`docs/site`](docs/site) and is deployed by [the GitHub Pages workflow](.github/workflows/pages.yml). In the GitHub repository settings, set **Pages → Build and deployment → Source** to **GitHub Actions** once; subsequent pushes to `main` that change documentation or branding deploy it automatically.
+The static documentation site lives in [`docs/site`](docs/site) and is deployed by [the GitHub Pages workflow](.github/workflows/pages.yml). Before its first deployment, a repository administrator must enable GitHub Pages and select **Pages → Build and deployment → Source → GitHub Actions**. Subsequent pushes to `main` that change documentation or branding deploy it automatically.
+
+Alternatively, add a `PAGES_ENABLEMENT_TOKEN` repository secret containing a fine-grained token with **Pages: write** and **Administration: write** for this repository. The workflow then enables Pages on its first run. Do not use a broad personal token or expose the token in workflow files.
 
 ## Architecture
 
