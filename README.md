@@ -11,6 +11,33 @@ Lifecycle.NET is an async-first, framework-independent lifecycle foundation for 
 
 NuGet packages use the `Magnexis.Lifecycle.*` namespace to provide a unique, publisher-owned package identity. This does not change the `Lifecycle` C# namespaces or the Lifecycle.NET product name.
 
+## Install
+
+```bash
+dotnet add package Magnexis.Lifecycle --version 0.1.0-alpha.1
+```
+
+Official NuGet package: [nuget.org/packages/Magnexis.Lifecycle](https://www.nuget.org/packages/Magnexis.Lifecycle)
+
+Lifecycle.NET is currently an alpha release. Pin the prerelease version explicitly and test it in a non-critical environment before adopting it in production.
+
+Official package page: [nuget.org/packages/Magnexis.Lifecycle/0.1.0-alpha.1](https://www.nuget.org/packages/Magnexis.Lifecycle/0.1.0-alpha.1)
+
+## Package identity change
+
+The initial package identifiers (`Lifecycle.NET`, `Lifecycle.Graph`, and related IDs) were not available for publication on NuGet.org. The published family therefore uses a Magnexis-owned prefix:
+
+| Earlier package ID | Published package ID |
+| --- | --- |
+| `Lifecycle.NET` | [`Magnexis.Lifecycle`](https://www.nuget.org/packages/Magnexis.Lifecycle) |
+| `Lifecycle.Abstractions` | [`Magnexis.Lifecycle.Abstractions`](https://www.nuget.org/packages/Magnexis.Lifecycle.Abstractions) |
+| `Lifecycle.Graph` | [`Magnexis.Lifecycle.Graph`](https://www.nuget.org/packages/Magnexis.Lifecycle.Graph) |
+| `Lifecycle.Diagnostics` | [`Magnexis.Lifecycle.Diagnostics`](https://www.nuget.org/packages/Magnexis.Lifecycle.Diagnostics) |
+| `Lifecycle.Hosting` | [`Magnexis.Lifecycle.Hosting`](https://www.nuget.org/packages/Magnexis.Lifecycle.Hosting) |
+| `Lifecycle.Extensions.DependencyInjection` | [`Magnexis.Lifecycle.Extensions.DependencyInjection`](https://www.nuget.org/packages/Magnexis.Lifecycle.Extensions.DependencyInjection) |
+
+This is a NuGet package-ID change only. Existing `using Lifecycle;` directives, assembly names, project names, and public API namespaces remain unchanged.
+
 ## Included today
 
 - Thread-safe `LifecycleObject` base class with validated states and serialized transitions.
@@ -23,6 +50,17 @@ NuGet packages use the `Magnexis.Lifecycle.*` namespace to provide a unique, pub
 - A supervisor that can observe failed objects, invoke recovery, and safely restart them.
 - Work leases and drain barriers for graceful pauses, restarts, shutdowns, and disposal.
 - A self-contained executable test suite requiring no third-party test runner.
+
+## Common package combinations
+
+| Need | Package |
+| --- | --- |
+| Lifecycle base class and middleware | `Magnexis.Lifecycle` |
+| Contracts only | `Magnexis.Lifecycle.Abstractions` |
+| Dependency-aware startup and rollback | `Magnexis.Lifecycle.Graph` |
+| History, metrics, and recovery supervision | `Magnexis.Lifecycle.Diagnostics` |
+| `IServiceCollection` registration | `Magnexis.Lifecycle.Extensions.DependencyInjection` |
+| .NET Generic Host coordination | `Magnexis.Lifecycle.Hosting` |
 
 ## Quick start
 
@@ -49,6 +87,24 @@ await worker.InitializeAsync();
 await worker.StartAsync();
 await worker.WaitForRunningAsync();
 await worker.StopAsync();
+```
+
+## Graceful work draining
+
+Acquire a lease around active work. During a pause, restart, shutdown, or disposal, Lifecycle.NET stops accepting new leases and waits for active leases to complete.
+
+```csharp
+await using var lease = await worker.AcquireLeaseAsync(cancellationToken);
+await ProcessMessageAsync(cancellationToken);
+```
+
+## Recovery supervision
+
+`RecoverAsync()` is valid after a lifecycle enters `Failed` and returns it to `Initialized`. Add an opt-in supervisor when a failed component should be recovered and restarted automatically.
+
+```csharp
+using var supervisor = new Lifecycle.Diagnostics.LifecycleSupervisor();
+supervisor.Supervise(worker);
 ```
 
 ## State model
