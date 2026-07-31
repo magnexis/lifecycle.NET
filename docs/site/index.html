@@ -23,8 +23,10 @@
     <img class="logo" src="assets/lifecycle-net-logo.png" alt="Lifecycle.NET logo">
     <h1>One lifecycle model for .NET.</h1>
     <p class="lead">Lifecycle.NET provides validated, async-first state transitions, middleware, diagnostics, dependency graphs, and Generic Host integration.</p>
-    <div class="actions"><a class="button primary" href="#quick-start">Quick start</a><a class="button" href="#runtime">Runtime model</a></div>
-    <section id="quick-start"><h2>Quick start</h2><pre><code>var worker = new Worker();
+    <div class="actions"><a class="button primary" href="https://www.nuget.org/packages/Magnexis.Lifecycle">Get it on NuGet</a><a class="button" href="#quick-start">Quick start</a><a class="button" href="#runtime">Runtime model</a></div>
+    <section id="quick-start"><h2>Quick start</h2><p>Install the official package from <a href="https://www.nuget.org/packages/Magnexis.Lifecycle">NuGet.org: Magnexis.Lifecycle</a>.</p><pre><code>dotnet add package Magnexis.Lifecycle --version 0.1.0-alpha.1
+
+var worker = new Worker();
 await worker.InitializeAsync();
 await worker.StartAsync();
 await worker.StopAsync();</code></pre></section>
